@@ -1,3 +1,4 @@
 # theme: jekyll-theme-architect
 name: ZZChaser
 markdown: kramdown
+permalink: /blog/:year/:month/:day/:title
