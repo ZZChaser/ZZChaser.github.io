@@ -7,7 +7,7 @@ cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
 tags: angular
 ---
 
-> welcome to my blog
+> 使用HttpInterceptor统一做http出错处理
 
 ### 目的
 
