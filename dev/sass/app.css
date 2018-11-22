@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /**
  * Jekyll Theme Style
  * - author: liaokeyu (liaokeyu.com)
@@ -66,14 +67,13 @@ a {
   .g-header .g-logo {
     float: left;
     margin-left: 2%;
-    width: 60px;
+    width: 120px;
     height: 26px;
     background: url("../icons/logo.svg") no-repeat center;
     background-size: 100% 100%;
-    opacity: .8;
     transition: all .2s; }
     .g-header .g-logo:hover {
-      opacity: 1; }
+      opacity: 0.9; }
     .g-header .g-logo a {
       display: block;
       width: 100%;
@@ -123,9 +123,18 @@ a {
 
 .g-banner {
   height: 460px;
-  background-color: #2F3139;
+  background: url(../../assets/img/blogBg.jpg) no-repeat;
+  background-size: cover;
   color: #fff;
-  padding: 0 60px; }
+  position: relative; }
+  .g-banner::after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    left: 0;
+    top: 0; }
 
 .home-banner {
   position: relative;
@@ -149,12 +158,6 @@ a {
     font-weight: normal;
     letter-spacing: 10px;
     margin-top: 8px; }
-
-.banner-theme-default {
-  background: -webkit-linear-gradient(0deg, #3CD5FF, #007AFF);
-  background: -o-linear-gradient(0deg, #3CD5FF, #007AFF);
-  background: -moz-linear-gradient(0deg, #3CD5FF, #007AFF);
-  background: linear-gradient(100deg, #3CD5FF, #007AFF); }
 
 .banner-theme-pink {
   background: -webkit-linear-gradient(0deg, #FFCE69, #FA709A);
@@ -626,7 +629,7 @@ a {
   padding: 0 0 32px; }
   .markdown-body .highlight {
     margin: 0 0 16px;
-    overflow: scroll; }
+    /** overflow: scroll;  修复代码高亮 显示两个 scroll的问题 **/ }
   .markdown-body img {
     transition: .3s; }
   .markdown-body ul li p, .markdown-body ol li p {
@@ -787,7 +790,7 @@ a {
 .night-mode {
   background-color: #282C33; }
   .night-mode .g-banner {
-    background-color: #282C33;
+    background: url(../../assets/img/blogBg.jpg);
     color: #C8CDD3; }
   .night-mode .post-header .filter {
     opacity: .6; }
