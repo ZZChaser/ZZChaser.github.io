@@ -4,14 +4,13 @@ title: 'angular change detection'
 date: 2018-11-30
 author: ZZChaser
 cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
-tags: problems
+tags: angular
 ---
 
 > angular 中的变更检测
 
 ### 什么是变更检查
 &emsp;&emsp;检查数据模型和视图之间绑定的值是否发生了改变
-
 ### 什么引起了变更检查
 &emsp;&emsp;事实上就是引起了数据模型和视图间绑定的值发生变化，有如下几种情况：
 * 事件：click，mouseover，keyup...
@@ -41,4 +40,8 @@ class ApplicationRef {
 }
 ```
 ### angular检查机制（脏检查）
-&emsp;&emsp;简单理解，脏检查就是存储所有变量的值，每当可能有变量改变就触发检查，将所有的值同旧值进行比较(复杂数据比较的是地址)，不相等就说明发生了改变，就需要更新相应的视图。
+&emsp;&emsp;简单理解，脏检查就是存储所有变量的值，每当可能有变量改变就触发检查，将所有的值同旧值进行比较(复杂数据比较的是地址)，不相等就说明发生了改变，就需要更新相应的视图。angular首次会检查所有组件，变化检查时从根组件开始从上而下的开始检查
+### 参考
+* <a style='color:#0A497B' href='http://pascalprecht.github.io/slides/angular-2-change-detection-explained/#/' target='_blank'>change detection</a>
+* <a style='color:#0A497B' href='https://www.jianshu.com/p/6bef681a0cae' target='_blank'>Angular中的变更检测</a>
+
