@@ -3,7 +3,7 @@ layout: post
 title: '遇到的滚动条'
 date: 2018-12-18
 author: ZZChaser
-cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
+# cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
 tags: summary
 ---
 

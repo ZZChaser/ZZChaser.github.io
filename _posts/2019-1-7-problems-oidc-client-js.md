@@ -3,7 +3,7 @@ layout: post
 title: 'angular中使用oidc-client-js的问题'
 date: 2019-1-7
 author: ZZChaser
-cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
+# cover: '/assets/img/myBg.jpg'
 tags: problems
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title: 'less中使用calc的问题'
 date: 2018-11-21
 author: ZZChaser
-cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
+# cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
 tags: problems
 ---
 

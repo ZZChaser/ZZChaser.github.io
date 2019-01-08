@@ -3,7 +3,7 @@ layout: post
 title: 'angular中的特殊选择器'
 date: 2018-11-22
 author: ZZChaser
-cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
+# cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
 tags: angular
 ---
 

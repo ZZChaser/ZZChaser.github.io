@@ -3,7 +3,7 @@ layout: post
 title: 'angular optimization'
 date: 2018-12-29
 author: ZZChaser
-cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
+# cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
 tags: angular
 ---
 

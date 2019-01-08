@@ -3,7 +3,7 @@ layout: post
 title: 'angular change detection'
 date: 2018-11-30
 author: ZZChaser
-cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
+# cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
 tags: angular
 ---
 
