@@ -19,7 +19,6 @@ tags: js
 * Symbol (es6)
   
 #### 复杂数据类型
-* Array 
 * Object
 
 ### typeof(主要用来判断简单数据类型)
