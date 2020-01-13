@@ -21,3 +21,4 @@ tags: summary
     const date = new Date(time.replace(/-/g,'/'));
 ``` 
 2. ### ie样式中不支持css中的initial值，line-height改用为normal为其默认值
+3. ### ie中word-break: break-all无效，元素必须是block或者inline-block才会生效
