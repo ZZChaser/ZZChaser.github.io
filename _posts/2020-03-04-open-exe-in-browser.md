@@ -8,10 +8,7 @@ tags: summary
 ---
 
 > 在浏览器中调用开启exe程序
-### 注册表方式
-* 数据类型判断不精确
-* 数据层次多容易栈溢出
-* 循环引用问题
+### 注册表方式（通用）
 #### 添加注册表（先用txt文本编辑，然后修改后缀名为.reg。然后双击运行即可）
 ```txt
     Windows Registry Editor Version 5.00
@@ -37,7 +34,6 @@ tags: summary
     <a href="zhao://">  open exe  </a>
 ```
 #### 注意事项
-* zhao的路径可以自定义
 * 程序的路径中不能存在中文
 * 填写路径时注意斜线的转义
 ### IE
@@ -48,7 +44,7 @@ tags: summary
             var exe = new ActiveXObject("wscript.shell");
             exe.run(exePath); 
         }catch(e) {
-            alert('找不到文件："'+exePath+'"，请检查路径是否正确！  ');
+            alert('请检查路径是否正确！');
         }
     }
     // 调用
