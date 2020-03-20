@@ -12,9 +12,19 @@ tags: js
 ### 浅拷贝与深拷贝
 * 浅拷贝：js的数据类型中分为值类型和引用类型，浅拷贝在复制引用类型的时候只复制一层，拷贝地址，指向了同一份数据。
 * 深拷贝：深拷贝是进行无限层次的拷贝
-#### 简单示例：
+
+#### 说明示例
+```javascript
+    const oriObj = {a:{a1:2}};
+    const shallowObj = cloneShallow(oriObj);  // 浅拷贝
+    const deepObj = cloneDeep(oriObj);      //深拷贝
+    console.log(oriObj.a === shallowObj.a); // => true
+    console.log(oriObj.a === deepObj.a); // => false
+```
+### 浅拷贝
 ```javascript
     function cloneShallow(data) {
+        if(typeof data !== "object") return data;
         let copyData = {};
         if(Array.isArray(data)) {
             copyData = [];
@@ -27,144 +37,158 @@ tags: js
         }
         return copyData;
     }
-
+```
+### 深拷贝
+```javascript
     function cloneDeep(data) {
-        if (typeof data !== "object") {
-            return data;
-        }
+        if(typeof data !== "object") return data;
         let copyData = {};
         if(Array.isArray(data)) {
             copyData = [];
         }
         for(const key of Object.keys(data)) {
-            if(typeof data[key] !== "object") {
-                return data[key];
-            } else {
-                return cloneDeep(data[key]);
+            if (typeof data[key] !== "object") {
+                copyData[key] = cloneDeep(data[key]);
+            }else {
+                copyData[key] = data[key];
             }
         }
+        return copyData;
     }
 ```
-### 深拷贝中的问题
-* 数据类型判断不精确
-* 数据层次多容易栈溢出
-* 循环引用问题
-#### 添加数据类型的判断
+&emsp;深拷贝中潜在的问题
+* 循环引用导致爆栈
+* 引用丢失
+* 递归层次过深还有爆栈可能
+
+#### 解决循环引用
+&emsp;对象中的一个子项与该对象或者该对象的父级的引用相同，说明存在循环引用
 ```javascript
-    function cloneDeep(data) {
-        // 判断基础类型，除了null
-        if (typeof data !== "object") {
-            return data;
-        }
-        // 单独处理null
-        if (data === null) {
-            return data;
-        }
-
+    const obj = {};
+    obj.a = obj;
+```
+&emsp;使用循环检测，如果父级中已有该对象，则直接返回
+```javascript
+    function cloneDeep(data, parent = null) {
+        if(typeof data !== "object") return data;
         let copyData = {};
-
-        // 处理Set
-        if (Object.prototype.toString.call(data) === "[object Set]") {
-            return new Set([...data]);
+        while(parent) {
+            if (parent.oriParent === data) {
+                return parent.oriParent;
+            }
+            parent = parent.parent
         }
-        // Map Function
-
-        // 判断数组
-        if(Array.isArray(data)) {
+         if(Array.isArray(data)) {
             copyData = [];
         }
-        // 
         for(const key of Object.keys(data)) {
             if(typeof data[key] !== "object") {
-                return data[key];
+                copyData[key] = data[key];
             } else {
-                return cloneDeep(data[key]);
+                copyData[key] = cloneDeep(data[key], {
+                    oriParent: data,
+                    parent
+                });
             }
         }
+        return copyData;
     }
 ```
-#### 使用循环代替递归
+#### 解决引用丢失
+&emsp;对象中不同的项，有相同的引用
 ```javascript
-    // 大概思路
+    const singleObj = {a:5}
+    const obj = {a:singleObj, b:singleObj};
+    console.log(obj.a ===obj.b);  //=> true
+    const copyObj = cloneDeep(obj);
+    console.log(copyObj.a ===copyObj.b); //=> false
+```
+&emsp;使用map记录原对象和copy对象的对应关系，如果要复制的对象已存在，则直接返回该对象对应的copy对象
+```javascript
     function cloneDeep(data) {
-        const root = {};
-        const treeNode = [{
-            parent: root,
-            key: undefined,
-            data: data
-        }];
-        while(treeNode.length > 0) {
-            cosnt node = treeNode.pop();
-            const { parent, key, data } = node;
-            let res = parent;
-            if (key === undefined) {
-                res = parent[key] = {};
+        if(typeof data !== "object") return data;
+        const clonedMap = new Map();
+        function clone(data) {
+            if(typeof data !== "object") return data;
+            let copyData = {};
+            const mapItem = clonedMap.get(data);
+            if (mapItem) {
+                return mapItem;
             }
-            for (const key of Object.keys(data)) {
-                if (typeof data[key] !== "object") {
-                    res[key] = data[key];
+            clonedMap.set(data, copyData);
+
+            if(Array.isArray(data)) {
+                copyData = [];
+            }
+            for(const key of Object.keys(data)) {
+                if(typeof data[key] !== "object") {
+                    copyData[key] = data[key];
                 } else {
-                    const nextNode = {
+                    copyData[key] = clone(data[key]);
+                }
+            }
+            return copyData;
+        }
+        return clone(data);
+    }
+```
+#### 解决递归
+&emsp;使用循环代替递归
+```javascript
+    function cloneDeep(data) {
+        if(typeof data !== "object") return data;
+        const root = {};
+        const tree = [{
+            parent: root,
+            key: '',
+            data
+        }];
+        while (tree.length > 0) {
+            const item = tree.pop();
+            const { parent, key, data } = item;
+            let res = parent;
+            if (key) {
+                res = parent[key] = {};
+            } 
+            for (const key of Object.keys(data)) {
+                const dataItem = data[key];
+                if (typeof dataItem === "object") {
+                    const node = {
                         parent: res,
                         key,
-                        data: data[key],
-                    };
-                    treeNode.push(nextNode);
+                        data: dataItem
+                    }
+                    tree.push(node);
+                } else {
+                    res[key] = dataItem;
                 }
             }
         }
         return root;
     }
+    
 ```
-#### 记录复制过的object
-```javascript
-    // 大概思路
-    function cloneDeep(data) {
-        const root = {};
-        const uniqueList = [];
-        const treeNode = [{
-            parent: root,
-            key: undefined,
-            data: data
-        }];
-        while(treeNode.length > 0) {
-            const node = treeNode.pop();
-            const { parent, key, data } = node;
-            let res = parent;
-            if (key === undefined) {
-                res = parent[key] = {};
-            }
-
-            const uniqueData = find(uniqueList, data);
-            if (uniqueData) {
-                res = uniqueData.target
-                continue;
-            }
-
-            uniqueList.push({
-                source: data,
-                target: res,
-            });
-
-            for (const key of Object.keys(data)) {
-                if (typeof data[key] !== "object") {
-                    res[key] = data[key];
-                } else {
-                    const nextNode = {
-                        parent: res,
-                        key,
-                        data: data[key],
-                    };
-                    treeNode.push(nextNode);
-                }
-            }
-        }
-        return root;
-    }
-```
+### 说明
+&emsp;以上示例只是说明深拷贝中的这些典型问题，忽略了类型的具体判断和不同的处理
 ### 其它
-* JSON.parse(JSON.stringify())
-* copy function eval(fun.toString())
+#### 最简单的深拷贝
+```javascript
+    function cloneDeep(data) {
+        return JSON.parse(JSON.stringify(data))
+    }
+```
+该方法存在以下问题存在的问题
+* 当data中存在function，RegExp，Map，Set等数据格式不会正确拷贝
+* 当存在循环引用时会出错
+#### 深拷贝一个函数
+```javascript
+    function sayName(name) {
+        console.log(`name is ${name}`);
+    }
+    const copySayName = eval(`(${sayName.toString()})`);
+    copySayName('ok')  //=> "name is ok"
+```
 ### 参考
 * <a style='color:#0A497B' href='https://segmentfault.com/a/1190000016672263' target='_blank'>深拷贝的终极探索</a>
+* <a style='color:#0A497B' href='https://zhuanlan.zhihu.com/p/23251162' target='_blank'>Javascript之深拷贝</a>
 
