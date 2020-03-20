@@ -4,7 +4,7 @@ title: '单例模式'
 date: 2020-03-19
 author: ZZChaser
 # cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
-tags: summary
+tags: js
 ---
 
 > 一个对象只能被实例化一次

@@ -191,4 +191,5 @@ tags: js
 ### 参考
 * <a style='color:#0A497B' href='https://segmentfault.com/a/1190000016672263' target='_blank'>深拷贝的终极探索</a>
 * <a style='color:#0A497B' href='https://zhuanlan.zhihu.com/p/23251162' target='_blank'>Javascript之深拷贝</a>
+* <a style='color:#0A497B' href='https://cloud.tencent.com/developer/ask/179234' target='_blank'>拷贝js函数</a>
 

@@ -4,7 +4,7 @@ title: '工厂模式'
 date: 2020-03-18
 author: ZZChaser
 # cover: 'http://on2171g4d.bkt.clouddn.com/jekyll-banner.png'
-tags: summary
+tags: js
 ---
 
 > 工厂模式的三种实现。在不同对象中，具有相同的属性、方法，只是具体实现不一样，就应该考虑使用工厂模式
