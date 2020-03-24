@@ -8,6 +8,7 @@ tags: summary
 ---
 
 > 在浏览器中调用开启exe程序
+
 ### 注册表方式（通用）
 #### 添加注册表（先用txt文本编辑，然后修改后缀名为.reg。然后双击运行即可）
 ```txt
@@ -27,15 +28,16 @@ tags: summary
     @=""
 
     [HKEY_CLASSES_ROOT\zhao\shell\open\command]
-    @="\"C:\\Users\\zhuzhao\\Test.exe\" "
+    @="\"C:\\Users\\zhuzhao\\Test.exe\" \"%1\" "
 ```
 #### 调用
 ```html
-    <a href="zhao://">  open exe  </a>
+    <a href="zhao://8080">  open exe  </a>
 ```
 #### 注意事项
 * 程序的路径中不能存在中文
 * 填写路径时注意斜线的转义
+* 传参需要在路径后添加`\"%1\"`，然后命令后面跟的就是参数`8080`
 ### IE
 ```javascript
     function startExe(exePath) {
