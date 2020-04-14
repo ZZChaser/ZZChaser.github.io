@@ -84,8 +84,78 @@ tags: network
    攻击者伪造大量ip不存在的联机请求，导致服务器发送确认后得不到回复，于是重发确认直至超时，造成网络瘫痪，如果半连接满了还会丢失正常的联机请求。解决：网关过滤、减少超时、增大半连接队列
 3. 三次握手中能携带数据吗
    如果第一次可以携带就会放大syn攻击，第三次代表能成功建立连接，可以携带数据
+
+
+
+### 滑动窗口
+&emsp;&emsp;滑动窗口是传输层流控的一种措施，接收方通告自己接收的窗口大小，发送方通过该值来调整发送的速度，从而防止发送方过快导致接收方被淹没
+
+#### 发送窗口
+&emsp;&emsp;大小等于对方通告的接受窗口大小，发送方的数据分为四类：
+1. 已发送，已确认（收到ack确认）
+2. 已发送，未确认
+3. 未发送，接收方允许发送
+4. 未发送，接收方未允许发送
+
+其中`2, 3`部分的数据称为发送窗口
+#### 接受窗口
+&emsp;&emsp;大小由应用、系统、硬件限制，发送方的数据分为三类：
+1. 已接收
+2. 未接受，准备接受
+3. 未接受，不准备接受
+
+其中`2`部分称为接受窗口
+#### 图片说明
+![滑动窗口](/assets/img/slide_window.png '滑动窗口')
+
+## HTTP缓存
+&emsp;&emsp;缓存是用来减少请求，或减少请求响应的体积，从而达到减轻服务器压力和增强用户体验
+### 缓存的位置
+#### memory cache
+* 缓存在内存中
+* 空间较小
+* 短期缓存（关掉tab就会释放掉）
+* 忽略`http`头部设置`max-age: 0、no-cache`等，只要缓存存在就返回，除了`cache-control: no-store`
+
+#### disk cache
+* 缓存在硬盘中
+* 空间较大
+* 较长时间的缓存
+* 允许相同的资源在跨会话，甚至跨站点的情况下使用
+* 根据`http`头部信息进行设置
+
+### 缓存类型
+#### 强缓存
+&emsp;&emsp;发起请求后，检查缓存中是否有相应缓存，如果有直接返回，不请求真正的服务器
+#### 设置强缓存
+
+* `Expires`（http1.0）
+  
+  `Expires: Tue Apr, 14 2020 09:51:16 GMT`：绝对时间。当浏览器时间和服务器时间不一致时可能导致缓存失效
+
+* `Cache-control`（http1.1，优先级更高）
+   
+   * `max-age=86400`：相对时间。最大有效时间（单位`s`）
+   * `must-revalidate`：超过最大时间，必须向服务器发起请求，验证资源是否有效
+   * `no-cache`（http1.1之前可用`Pragma: no-cache`）：先缓存，使用前由协商缓存验证决定
+   * `no-store`：不缓存，包括强制缓存和协商缓存，所有内容都请求服务器
+   * `public`：客户端和代理服务器等都能缓存
+   * `private`：只有客户端能缓存（默认值）
+
+#### 协商缓存
+&emsp;&emsp;发起请求时会带上服务器之前返回的标识，服务器根据标识判断缓存是否失效，未失效则返回`304`，继续使用缓存，反之则返回最新数据以及标识
+#### 设置协商缓存
+1. `Last-Modified`和`Last-Modified-Since`
+   
+   浏览器第一次请求的时候服务器设置`Last-Modified: Tue Apr, 14 2020 09:51:16 GMT`，告诉客户端资源的最后一次修改时间。当浏览器再次请求的时候会把`Last-Modified`值写进`Last-Modified-Since`一起发送给服务器。服务器将最新修改时间与`Last-Modified-Since`进行对比，相同则没有改变，返回`304`，反之返回最新数据以及最新修改时间。有如下缺陷
+   * 但是但文件是动态生成的话，最新修改时间就是每次生成的时间，在文件内容没有改变的情况下达不到缓存的目的
+2. `Etag`和`If-None-Match`
+   
+   流程与`Last-Modified`流程一样，只是`Etag`存的是文件的特殊标识（一般hash生成）。优先级比`Etag`高
 ## 参考
+
 * <a style='color:#0A497B' href='https://juejin.im/post/5b5f20686fb9a04f844adbdd' target='_blank'>搞定计算机网络面试，看这篇就够了</a>
 * <a style='color:#0A497B' href='https://blog.csdn.net/lengxiao1993/article/details/82771768' target='_blank'>TCP 为什么三次握手而不是两次握手</a>
-* <a style='color:#0A497B' href='https://blog.csdn.net/m0_37962600/article/details/79951780' target='_blank'>待补充</a>
+* <a style='color:#0A497B' href='https://coolshell.cn/articles/11609.html' target='_blank'>TCP 的那些事儿（下）</a>
+* <a style='color:#0A497B' href='https://zhuanlan.zhihu.com/p/44789005' target='_blank'>一文读懂前端缓存</a>
 
