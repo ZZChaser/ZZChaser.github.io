@@ -44,7 +44,7 @@ tags: summary
         try{
             //新建一个ActiveXObject对象
             var exe = new ActiveXObject("wscript.shell");
-            exe.run(exePath); 
+            exe.run(`exePath 8080`); 
         }catch(e) {
             alert('请检查路径是否正确！');
         }
@@ -55,6 +55,7 @@ tags: summary
 #### 注意事项
 * `ActiveXObject`对象只在ie中存在
 * 填写路径时注意斜线的转义
+* 路径后面空一格再加参数
 * 更改IE的安全级别：开始->设置->控制面板->Internet选项->安全->自定义级别->对未标记为安全的ActiveX控件进行初始化和脚本运行->启用。
 ### 参考
 * <a style='color:#0A497B' href='https://blog.csdn.net/longzhoufeng/article/details/78796837?utm_source=blogxgwz3' target='_blank'>打开本地一个exe</a>
