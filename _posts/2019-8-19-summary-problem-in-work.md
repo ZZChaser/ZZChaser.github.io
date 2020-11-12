@@ -23,3 +23,4 @@ tags: summary
 2. ### ie样式中不支持css中的initial值，改用为normal为其默认值
 3. ### ie中word-break: break-all无效，元素必须是block或者inline-block才会生效
 4. ### ie中的sessionStorage和localStorage只在http和https网站中生效，本地文件打开为undefined
+5. ### `overflow-x`和`overflow-y`在同一元素下使用问题 <a href="https://www.jb51.net/css/636587.html" target="_blank">参考</a>
